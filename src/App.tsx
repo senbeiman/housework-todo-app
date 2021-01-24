@@ -1,5 +1,6 @@
 import React from 'react';
 import Clock from './components/Clock';
+import Trash from './components/Trash';
 import Weather from './components/Weather';
 
 const App: React.FC = () => {
@@ -7,6 +8,7 @@ const App: React.FC = () => {
     <div>
       <Clock />
       <Weather />
+      <Trash />
     </div>
   )
 }
