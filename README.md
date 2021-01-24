@@ -79,8 +79,9 @@ DISPLAY=:0 chromium-browser -kiosk --app=http://localhost:5000
 You may automate this process on startup by referencing this article.  
 [How to Run a Raspberry Pi Program on Startup](https://learn.sparkfun.com/tutorials/how-to-run-a-raspberry-pi-program-on-startup/all)
 ### Wi-Fi disconnecting problem
-[Wifi disconnects after a random amount of time](https://www.raspberrypi.org/forums/viewtopic.php?t=25854)  
+[Raspberry Pi 3 - internal Wifi wont connect to network](https://raspberrypi.stackexchange.com/questions/43566/raspberry-pi-3-internal-wifi-wont-connect-to-network)  
+add these two lines in network section
 ```
-sudo iwconfig wlan0 power off
+pairwise=CCMP TKIP
+group=CCMP TKIP
 ```
-It's not certain that this is a solution.
