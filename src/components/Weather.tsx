@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const WEATHER_FETCH_PERIOD = 1000 * 60 * 10
+
 const Weather: React.FC = () => {
   const [weather, setWeather] = useState({
     feelingTemp: 0,
@@ -15,7 +17,6 @@ const Weather: React.FC = () => {
   useEffect(() => {
     const getWeather = async () => {
       const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Kokubunji&units=metric&lang=ja&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`)
-      console.log(data)
       setWeather({
         feelingTemp: data.main.feels_like,
         temp: data.main.temp,
@@ -27,6 +28,7 @@ const Weather: React.FC = () => {
       })
     }
     getWeather()
+    setInterval(getWeather, WEATHER_FETCH_PERIOD)
   }, [])
   return (
     <div>
