@@ -1,0 +1,29 @@
+{
+  "periodical_todos": [
+    {
+      "name": "クイックルワイパー",
+      "last_updated_at": "2021-01-24 16:20:10",
+      "desired_interval_days": 7
+    },
+    {
+      "name": "掃除機",
+      "last_updated_at": "2021-01-24 11:00:00",
+      "desired_interval_days": 2
+    },
+    {
+      "name": "トイレ掃除",
+      "last_updated_at": "2021-01-08 15:39:14",
+      "desired_interval_days": 14
+    }
+  ],
+  "temporary_todos": [
+    {
+      "name": "ホワイトボード設置",
+      "deadline": "2021-01-25 00:00:00"
+    },
+    {
+      "name": "紹介状提出",
+      "deadline": "2021-02-06 15:00:00"
+    }
+  ]
+}
