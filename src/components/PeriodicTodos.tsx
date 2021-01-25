@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import todoService from '../services/todo'
 import { startOfDay, differenceInDays, startOfToday, parseJSON } from 'date-fns';
+import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend } from '../types';
 
-interface TodoBackend {
-  name: string,
-  last_updated_at: string,
-  desired_interval_days: number
-}
-interface Todo {
-  name: string,
-  lastUpdatedAt: Date,
-  lastUpdatedDistance: number,
-  desiredIntervalDays: number,
-  daysLeftToDesired: number
-}
 
 const PeriodicTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
   const generateAdvice = (daysLeftToDesired: number) => {
@@ -48,12 +37,14 @@ const PeriodicTodos: React.FC = () => {
  
   useEffect(() => {
     const getPeriodicalTodos = async () => {
-      const { data } = await axios.get('http://localhost:3001/periodical_todos')
-      const todosToUpdate = data.map((todo: TodoBackend) => {
+      const data = await todoService.get('/periodic_todos')
+      // todo: parse data from API
+      const todosToUpdate = (data as TodoBackend[]).map((todo) => {
         const lastUpdatedAt = parseJSON(todo.last_updated_at)
         const lastUpdatedDistance = calculateDistanceFromToday(lastUpdatedAt)
         const desiredIntervalDays = todo.desired_interval_days
         return {
+          id: todo.id,
           name: todo.name,
           lastUpdatedAt,
           desiredIntervalDays,
