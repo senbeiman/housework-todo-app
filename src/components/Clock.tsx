@@ -5,11 +5,12 @@ const Clock: React.FC = () => {
   const [time, setTime] = useState('');
  
   useEffect(() => {
-    setInterval(() => {
-      const time = format(new Date(), 'yyyy/MM/dd(E) HH:mm:ss')
-      setTime(time)
+    const intervalId = setInterval(() => {
+      const newTime = format(new Date(), 'yyyy/MM/dd(E) HH:mm:ss')
+      setTime(newTime)
     }, 1000)
-  }, [])
+    return () => {clearInterval(intervalId)}
+  }, [time])
   return <div>{time}</div>
 }
 

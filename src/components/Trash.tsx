@@ -34,9 +34,10 @@ const Trash: React.FC = () => {
       setTrash(getTrash(dayDiff))
     }
     updateTrash()
-    setInterval(updateTrash, 1000 * 60)
-  }, [])
-  return <>{trash && <div>明日は<span>{trash}</span>収集日</div>}</>
+    const intervalId = setInterval(updateTrash, 1000 * 60)
+    return () => {clearInterval(intervalId)}
+  }, [trash])
+  return <>{trash && <div>明日は{trash}収集日</div>}</>
 }
 
 export default Trash;
