@@ -3,16 +3,15 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale'
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState(new Date());
  
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const newTime = format(new Date(), 'yyyy/MM/dd(E) HH:mm:ss', { locale: ja })
-      setTime(newTime)
+      setTime(new Date())
     }, 1000)
     return () => {clearInterval(intervalId)}
   }, [time])
-  return <div>{time}</div>
+  return <div>{format(time, 'yyyy/MM/dd(E) HH:mm:ss', { locale: ja })}</div>
 }
 
 export default Clock;

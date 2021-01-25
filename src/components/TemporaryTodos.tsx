@@ -61,7 +61,6 @@ const TemporaryTodos: React.FC = () => {
           minutesLeftToDeadline
         }
       })
-      console.log(todosToUpdate)
       setTodos(todosToUpdate)
     }
     getTemporaryTodos()
