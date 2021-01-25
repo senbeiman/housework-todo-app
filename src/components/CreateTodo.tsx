@@ -28,7 +28,7 @@ const CreateTodo: React.FC = () => {
       await todoService.create('/periodic_todos', {
         name: values.name,
         desired_interval_days: values.desiredIntervalDays,
-        last_updated_at: new Date()
+        last_updated_at: null
       })
       history.push('/')
     },

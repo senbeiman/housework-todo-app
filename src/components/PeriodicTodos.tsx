@@ -5,8 +5,10 @@ import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend } from '../typ
 
 
 const PeriodicTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
-  const generateAdvice = (daysLeftToDesired: number) => {
-    if (daysLeftToDesired >= 1) {
+  const generateAdvice = (daysLeftToDesired: number | null) => {
+    if (daysLeftToDesired === null) {
+      return null
+    } else if (daysLeftToDesired >= 1) {
       return `ベストタイミングまであと${daysLeftToDesired}日`
     } else if (daysLeftToDesired === 0) {
       return `今日やるのがベストです`
@@ -19,9 +21,14 @@ const PeriodicTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
       <div>
         {todo.name} {todo.desiredIntervalDays}日毎 
       </div>
-      <div>
-        最終実施：{todo.lastUpdatedDistance}日前 
-      </div>
+      { todo.lastUpdatedDistance ?
+        <div>
+          最終実施：{todo.lastUpdatedDistance}日前 
+        </div>
+        : <div>
+          未実施
+        </div>
+      }
       <div>
         {generateAdvice(todo.daysLeftToDesired)}
       </div>
@@ -40,8 +47,8 @@ const PeriodicTodos: React.FC = () => {
       const data = await todoService.get('/periodic_todos')
       // todo: parse data from API
       const todosToUpdate = (data as TodoBackend[]).map((todo) => {
-        const lastUpdatedAt = parseJSON(todo.last_updated_at)
-        const lastUpdatedDistance = calculateDistanceFromToday(lastUpdatedAt)
+        const lastUpdatedAt = todo.last_updated_at ? parseJSON(todo.last_updated_at) : null
+        const lastUpdatedDistance = lastUpdatedAt && calculateDistanceFromToday(lastUpdatedAt)
         const desiredIntervalDays = todo.desired_interval_days
         return {
           id: todo.id,
@@ -49,9 +56,10 @@ const PeriodicTodos: React.FC = () => {
           lastUpdatedAt,
           desiredIntervalDays,
           lastUpdatedDistance,
-          daysLeftToDesired: desiredIntervalDays - lastUpdatedDistance
+          daysLeftToDesired: lastUpdatedDistance && (desiredIntervalDays - lastUpdatedDistance)
         }
       })
+      console.log(todosToUpdate)
       setTodos(todosToUpdate)
     }
     getPeriodicalTodos()
@@ -59,11 +67,11 @@ const PeriodicTodos: React.FC = () => {
 
   useEffect(() => {
     const todosToUpdate = todos.map((todo: Todo) => {
-      const lastUpdatedDistance = calculateDistanceFromToday(todo.lastUpdatedAt)
+      const lastUpdatedDistance = todo.lastUpdatedAt && calculateDistanceFromToday(todo.lastUpdatedAt)
       return {
         ...todo,
         lastUpdatedDistance,
-        daysLeftToDesired: todo.desiredIntervalDays - lastUpdatedDistance
+        daysLeftToDesired: lastUpdatedDistance && (todo.desiredIntervalDays - lastUpdatedDistance)
       }
     })
     const intervalId = setInterval(() => {
@@ -72,9 +80,15 @@ const PeriodicTodos: React.FC = () => {
     return () => {clearInterval(intervalId)}
   }, [todos])
 
-  const sortedTodos = [...todos].sort((a, b) => 
-    a.daysLeftToDesired - b.daysLeftToDesired
-  )
+  const sortedTodos = [...todos].sort((a, b) => {
+    if (!a.daysLeftToDesired) {
+      return 1
+    }
+    if (!b.daysLeftToDesired) {
+      return -1
+    }
+    return a.daysLeftToDesired - b.daysLeftToDesired
+  })
 
   return (
     <div>

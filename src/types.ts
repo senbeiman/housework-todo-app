@@ -1,22 +1,22 @@
 export interface PeriodicTodoBackend {
   id: number,
   name: string,
-  last_updated_at: string,
+  last_updated_at: string | null,
   desired_interval_days: number
 }
 export interface PeriodicTodoSend {
   name: string,
-  last_updated_at: Date,
+  last_updated_at: Date | null,
   desired_interval_days: number
 }
 export type PeriodicTodoForm = Omit<PeriodicTodoBackend, "id" | "last_updated_at">
 export interface PeriodicTodo {
   id: number,
   name: string,
-  lastUpdatedAt: Date,
-  lastUpdatedDistance: number,
+  lastUpdatedAt: Date | null,
+  lastUpdatedDistance: number | null,
   desiredIntervalDays: number,
-  daysLeftToDesired: number
+  daysLeftToDesired: number | null
 }
 export interface TemporaryTodoBackend {
   id: number,
