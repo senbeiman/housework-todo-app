@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { format, differenceInMinutes, parseJSON, formatDistanceToNowStrict } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import todoService from '../services/todo'
+import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend } from '../types'
 
-interface TodoBackend {
-  name: string,
-  deadline: string
-}
-interface Todo {
-  name: string,
-  deadline: Date,
-  minutesLeftToDeadline: number,
-  distanceToDeadline: string
-}
+
 
 const TemporaryTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
   const generateAdvice = (todo: Todo) => {
@@ -50,11 +42,13 @@ const TemporaryTodos: React.FC = () => {
   
   useEffect(() => {
     const getTemporaryTodos = async () => {
-      const { data } = await axios.get('http://localhost:3001/temporary_todos')
-      const todosToUpdate = data.map((todo: TodoBackend) => {
+      const data = await todoService.get('/temporary_todos')
+      // TODO: parse data from API
+      const todosToUpdate = (data as TodoBackend[]).map((todo) => {
         const deadline = parseJSON(todo.deadline)
         const { distanceToDeadline, minutesLeftToDeadline } = calculateParametersToUpdate(deadline)
         return {
+          id: todo.id,
           name: todo.name,
           deadline,
           distanceToDeadline,
@@ -89,7 +83,7 @@ const TemporaryTodos: React.FC = () => {
     <div>
       <div>Temporary</div>
       {sortedTodos.map(todo => (
-        <TemporaryTodo key={todo.name} todo={todo} />
+        <TemporaryTodo key={todo.id} todo={todo} />
       ))}
     </div>
   )
