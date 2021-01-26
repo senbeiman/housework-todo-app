@@ -1,3 +1,5 @@
+import { string } from "yup/lib/locale";
+
 export interface PeriodicTodoBackend {
   id: number,
   name: string,
@@ -9,7 +11,6 @@ export interface PeriodicTodoSend {
   last_updated_at: Date | null,
   desired_interval_days: number
 }
-export type PeriodicTodoForm = Omit<PeriodicTodoBackend, "id" | "last_updated_at">
 export interface PeriodicTodo {
   id: number,
   name: string,
@@ -23,7 +24,10 @@ export interface TemporaryTodoBackend {
   name: string,
   deadline: string
 }
-export type TemporaryTodoForm = Omit<TemporaryTodoBackend, "id">
+export interface TemporaryTodoSend {
+  name: string,
+  deadline: Date
+}
 export interface TemporaryTodo {
   id: number,
   name: string,

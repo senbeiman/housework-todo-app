@@ -45,7 +45,7 @@ const PeriodicTodos: React.FC = () => {
   useEffect(() => {
     const getPeriodicalTodos = async () => {
       const data = await todoService.get('/periodic_todos')
-      // todo: parse data from API
+      // TODO: parse data from API
       const todosToUpdate = (data as TodoBackend[]).map((todo) => {
         const lastUpdatedAt = todo.last_updated_at ? parseJSON(todo.last_updated_at) : null
         const lastUpdatedDistance = lastUpdatedAt && calculateDistanceFromToday(lastUpdatedAt)
@@ -59,7 +59,6 @@ const PeriodicTodos: React.FC = () => {
           daysLeftToDesired: lastUpdatedDistance && (desiredIntervalDays - lastUpdatedDistance)
         }
       })
-      console.log(todosToUpdate)
       setTodos(todosToUpdate)
     }
     getPeriodicalTodos()
@@ -94,7 +93,7 @@ const PeriodicTodos: React.FC = () => {
     <div>
       <div>Periodic</div>
       {sortedTodos.map(todo => (
-        <PeriodicTodo key={todo.name} todo={todo} />
+        <PeriodicTodo key={todo.id} todo={todo} />
       ))}
     </div>
   )

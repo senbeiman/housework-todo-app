@@ -43,7 +43,7 @@ const TemporaryTodos: React.FC = () => {
   useEffect(() => {
     const getTemporaryTodos = async () => {
       const data = await todoService.get('/temporary_todos')
-      // todo: parse data from API
+      // TODO: parse data from API
       const todosToUpdate = (data as TodoBackend[]).map((todo) => {
         const deadline = parseJSON(todo.deadline)
         const { distanceToDeadline, minutesLeftToDeadline } = calculateParametersToUpdate(deadline)
@@ -83,7 +83,7 @@ const TemporaryTodos: React.FC = () => {
     <div>
       <div>Temporary</div>
       {sortedTodos.map(todo => (
-        <TemporaryTodo key={todo.name} todo={todo} />
+        <TemporaryTodo key={todo.id} todo={todo} />
       ))}
     </div>
   )

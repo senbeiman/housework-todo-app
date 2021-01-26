@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TemporaryTodoForm, PeriodicTodoSend } from '../types'
+import { TemporaryTodoSend, PeriodicTodoSend } from '../types'
 
 const baseUrl = 'http://localhost:3001' 
 
@@ -8,7 +8,7 @@ const get = async (path: string): Promise<unknown> => {
   return data
 }
 
-const create = async (path: string, todo: TemporaryTodoForm | PeriodicTodoSend): Promise<unknown> => {
+const create = async (path: string, todo: TemporaryTodoSend | PeriodicTodoSend): Promise<unknown> => {
   const { data } = await axios.post(baseUrl + path, todo)
   return data
 }
@@ -18,7 +18,7 @@ const remove = async (path: string): Promise<unknown> => {
   return data
 }
 
-const edit = async (path: string, todo: TemporaryTodoForm | PeriodicTodoSend): Promise<unknown> => {
+const edit = async (path: string, todo: TemporaryTodoSend | PeriodicTodoSend): Promise<unknown> => {
   const { data } = await axios.put(baseUrl + path, todo)
   return data
 }
