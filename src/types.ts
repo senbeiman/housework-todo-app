@@ -1,5 +1,3 @@
-import { string } from "yup/lib/locale";
-
 export interface PeriodicTodoBackend {
   id: number,
   name: string,

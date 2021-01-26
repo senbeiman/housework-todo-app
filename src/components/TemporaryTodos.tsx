@@ -4,9 +4,12 @@ import { ja } from 'date-fns/locale';
 import todoService from '../services/todo'
 import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend } from '../types'
 
-
-
-const TemporaryTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
+//TODO: pick same logic between PeriodicTodos and TemporaryTodos and create wrapping component
+interface Props {
+  todo: Todo,
+  onDoneClick: (id: number) => void
+}
+const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick }) => {
   const generateAdvice = (todo: Todo) => {
     if (todo.minutesLeftToDeadline >= 0) {
       return `期限まであと${todo.distanceToDeadline}`
@@ -18,6 +21,7 @@ const TemporaryTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
     <div key={todo.name}>
       <div>
         {todo.name}
+        <button onClick={() => {onDoneClick(todo.id)}}>done</button>
       </div>
       <div>
         期限：{format(todo.deadline, 'yyyy/MM/dd(E) HH:mm', { locale: ja })} 
@@ -32,7 +36,7 @@ const TemporaryTodos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const calculateParametersToUpdate = (deadline: Date) => {
-    const distanceToDeadline = formatDistanceToNowStrict(deadline, { locale: ja })
+    const distanceToDeadline = formatDistanceToNowStrict(deadline, { roundingMethod: 'floor', locale: ja })
     const minutesLeftToDeadline = differenceInMinutes(deadline, new Date())
     return {
       distanceToDeadline,
@@ -40,6 +44,11 @@ const TemporaryTodos: React.FC = () => {
     }
   }
   
+  const onDoneClick = async (id: number) => {
+    await todoService.remove(`/temporary_todos/${id}`)
+    const todosToUpdate = todos.filter(todo => todo.id !== id)
+    setTodos(todosToUpdate)
+  }
   useEffect(() => {
     const getTemporaryTodos = async () => {
       const data = await todoService.get('/temporary_todos')
@@ -83,7 +92,7 @@ const TemporaryTodos: React.FC = () => {
     <div>
       <div>Temporary</div>
       {sortedTodos.map(todo => (
-        <TemporaryTodo key={todo.id} todo={todo} />
+        <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick}/>
       ))}
     </div>
   )
