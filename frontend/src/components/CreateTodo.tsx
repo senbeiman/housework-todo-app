@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { format, parseJSON, sub } from 'date-fns';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, TextField, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@material-ui/core';
 import todoService from '../services/todo'
+import keyboardService from '../services/keyboard'
 import { useHistory } from 'react-router-dom';
-import child_process from 'child_process'
 
 const validationSchema = yup.object({
   name: yup
@@ -19,7 +19,6 @@ const validationSchema = yup.object({
 
 const CreateTodo: React.FC = () => {
   const history = useHistory()
-  const [keyboardPid, setKeyboardPid] = useState(0)
   const formik = useFormik({
     initialValues: {
       todoType: 'temporary',
@@ -62,6 +61,12 @@ const CreateTodo: React.FC = () => {
           label="Name"
           value={formik.values.name}
           onChange={formik.handleChange}
+          onFocus={() => {
+            keyboardService.get('/keyboard_on')
+          }}
+          onBlur={() => {
+            keyboardService.get('/keyboard_off')
+          }}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
@@ -74,11 +79,6 @@ const CreateTodo: React.FC = () => {
               type="datetime-local"
               value={formik.values.deadline}
               onChange={formik.handleChange}
-              onFocus={() => {
-                const cp = child_process.exec('DISPLAY=:0 matchbox-keyboard')
-                child_process.exec('DISPLAY=:0 wmctrl -r keyboard -e 0,0,700,600,300')
-                setKeyboardPid(cp.pid)
-              }}
               InputLabelProps={{
                 shrink: true,
               }}

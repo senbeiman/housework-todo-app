@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { TemporaryTodoSend, PeriodicTodoSend } from '../types'
 
-const baseUrl = 'http://localhost:3001' 
+const baseUrl = 'http://localhost:3002' 
 
 const get = async (path: string): Promise<unknown> => {
   const { data } = await axios.get(baseUrl + path)
