@@ -18,17 +18,6 @@ app.get('/keyboard_show', (_req, res) => {
   res.send()
 });
 
-app.get('/keyboard_hide', (_req, res) => {
-  childProcess.exec('DISPLAY=:0 wmctrl -a chromium', (err, stdout, stderr) => {
-    if (err) {
-      console.log(`stderr: ${stderr}`)
-      return
-    }
-    console.log(`stdout: ${stdout}`)
-  })
-  res.send()
-});
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
