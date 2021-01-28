@@ -62,10 +62,10 @@ const CreateTodo: React.FC = () => {
           value={formik.values.name}
           onChange={formik.handleChange}
           onFocus={() => {
-            keyboardService.get('/keyboard_on')
+            keyboardService.get('/keyboard_show')
           }}
           onBlur={() => {
-            keyboardService.get('/keyboard_off')
+            keyboardService.get('/keyboard_hide')
           }}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
