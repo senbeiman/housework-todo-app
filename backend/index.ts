@@ -8,13 +8,7 @@ app.use(express.static('build-react'))
 const PORT = 3001;
 
 app.get('/keyboard_show', (_req, res) => {
-  childProcess.exec('DISPLAY=:0 wmctrl -a keyboard', (err, stdout, stderr) => {
-    if (err) {
-      console.log(`stderr: ${stderr}`)
-      return
-    }
-    console.log(`stdout: ${stdout}`)
-  })
+  childProcess.exec('DISPLAY=:0 wmctrl -a keyboard')
   res.send()
 });
 
