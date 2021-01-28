@@ -7,7 +7,7 @@ app.use(express.static('build-react'))
 
 const PORT = 3001;
 
-app.get('/keyboard_show', (_req, _res) => {
+app.get('/keyboard_show', (_req, res) => {
   childProcess.exec('DISPLAY=:0 wmctrl -a keyboard', (err, stdout, stderr) => {
     if (err) {
       console.log(`stderr: ${stderr}`)
@@ -15,9 +15,10 @@ app.get('/keyboard_show', (_req, _res) => {
     }
     console.log(`stdout: ${stdout}`)
   })
+  res.send()
 });
 
-app.get('/keyboard_hide', (_req, _res) => {
+app.get('/keyboard_hide', (_req, res) => {
   childProcess.exec('DISPLAY=:0 wmctrl -a chromium', (err, stdout, stderr) => {
     if (err) {
       console.log(`stderr: ${stderr}`)
@@ -25,6 +26,7 @@ app.get('/keyboard_hide', (_req, _res) => {
     }
     console.log(`stdout: ${stdout}`)
   })
+  res.send()
 });
 
 app.listen(PORT, () => {
