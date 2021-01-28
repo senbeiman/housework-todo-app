@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, TextField, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@material-ui/core';
 import todoService from '../services/todo'
+import keyboardService from '../services/keyboard'
 import { useHistory } from 'react-router-dom';
 
 const validationSchema = yup.object({
@@ -60,6 +61,9 @@ const CreateTodo: React.FC = () => {
           label="Name"
           value={formik.values.name}
           onChange={formik.handleChange}
+          onFocus={() => {
+            keyboardService.get('/keyboard_show')
+          }}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
