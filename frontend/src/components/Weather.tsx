@@ -16,7 +16,11 @@ const Weather: React.FC = () => {
  
   useEffect(() => {
     const getWeather = async () => {
-      const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Kokubunji&units=metric&lang=ja&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`)
+      const url = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_WEATHER_URL_PROD : process.env.REACT_APP_WEATHER_URL_DEV
+      if (!url) {
+        throw new Error('no url for weather set')
+      }
+      const { data } = await axios.get(url)
       setWeather({
         feelingTemp: data.main.feels_like,
         temp: data.main.temp,
