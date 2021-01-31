@@ -1,48 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import todoService from '../services/todo'
+import todoService from '../../../services/todo'
 import { startOfDay, differenceInDays, startOfToday, parseJSON } from 'date-fns';
-import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend } from '../types';
+import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend } from '../../../types';
+import PeriodicTodo from './PeriodicTodo'
+import { makeStyles } from '@material-ui/core';
 
-
-interface Props {
-  todo: Todo,
-  onDeleteClick: (id: number) => void,
-  onDoneClick: (todo: Todo) => void
-}
-const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => {
-  const generateAdvice = (daysLeftToDesired: number | null) => {
-    if (daysLeftToDesired === null) {
-      return null
-    } else if (daysLeftToDesired >= 1) {
-      return `ベストタイミングまであと${daysLeftToDesired}日`
-    } else if (daysLeftToDesired === 0) {
-      return `今日やるのがベストです`
-    } else {
-      return `ベストタイミングを${-daysLeftToDesired}日過ぎています`
-    }
+const useStyles = makeStyles({
+  container: {
+    flex: 1
   }
-  return (
-    <div> 
-      <div>
-        {todo.name} {todo.desiredIntervalDays}日毎 
-        <button onClick={() => {onDeleteClick(todo.id)}}>delete</button>
-        <button onClick={() => {onDoneClick(todo)}}>done</button>
-      </div>
-      { (todo.lastUpdatedDistance !== null) ?
-        <div>
-          最終実施：{todo.lastUpdatedDistance === 0 ? '今日' : `${todo.lastUpdatedDistance}日前`}
-        </div>
-        : <div>
-          未実施
-        </div>
-      }
-      <div>
-        {generateAdvice(todo.daysLeftToDesired)}
-      </div>
-    </div>
-  )
-}
+})
+
 const PeriodicTodos: React.FC = () => {
+  const classes = useStyles()
   const [todos, setTodos] = useState<Todo[]>([]);
   
   const onDeleteClick = async (id: number) => {
@@ -135,8 +105,8 @@ const PeriodicTodos: React.FC = () => {
   })
 
   return (
-    <div>
-      <div>Periodic</div>
+    <div className={classes.container}>
+      <div>定期タスク</div>
       {sortedTodos.map(todo => (
         <PeriodicTodo key={todo.id} todo={todo} onDeleteClick={onDeleteClick} onDoneClick={onDoneClick}/>
       ))}

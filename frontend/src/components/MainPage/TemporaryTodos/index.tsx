@@ -1,38 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { format, differenceInMinutes, parseJSON, formatDistanceToNowStrict } from 'date-fns';
+import { differenceInMinutes, parseJSON, formatDistanceToNowStrict } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import todoService from '../services/todo'
-import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend } from '../types'
+import todoService from '../../../services/todo'
+import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend } from '../../../types'
+import TemporaryTodo from './TemporaryTodo'
+import { makeStyles } from '@material-ui/core';
 
-//TODO: pick same logic between PeriodicTodos and TemporaryTodos and create wrapping component
-interface Props {
-  todo: Todo,
-  onDoneClick: (id: number) => void
-}
-const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick }) => {
-  const generateAdvice = (todo: Todo) => {
-    if (todo.minutesLeftToDeadline >= 0) {
-      return `期限まであと${todo.distanceToDeadline}`
-    } else {
-      return `期限を${todo.distanceToDeadline}過ぎています`
-    }
+const useStyles = makeStyles({
+  container: {
+    flex: 1
   }
-  return (
-    <div key={todo.name}>
-      <div>
-        {todo.name}
-        <button onClick={() => {onDoneClick(todo.id)}}>done</button>
-      </div>
-      <div>
-        期限：{format(todo.deadline, 'yyyy/MM/dd(E) HH:mm', { locale: ja })} 
-      </div>
-      <div>
-        {generateAdvice(todo)}
-      </div>
-    </div>
-  )
-}
+})
+//TODO: pick same logic between PeriodicTodos and TemporaryTodos and create wrapping component
 const TemporaryTodos: React.FC = () => {
+  const classes = useStyles()
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const calculateParametersToUpdate = (deadline: Date) => {
@@ -89,8 +70,8 @@ const TemporaryTodos: React.FC = () => {
   )
 
   return (
-    <div>
-      <div>Temporary</div>
+    <div className={classes.container}>
+      <div>一時タスク</div>
       {sortedTodos.map(todo => (
         <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick}/>
       ))}
