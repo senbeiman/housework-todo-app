@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core'
 import { ja } from 'date-fns/locale'
 
 const useStyles = makeStyles({
   container: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: '30%'
   },
-  date: {
-    fontSize: '1rem'
-  },
-  time: {
-    fontSize: '2rem'
-  }
 })
 const Clock: React.FC = () => {
   const classes = useStyles()
@@ -29,8 +25,8 @@ const Clock: React.FC = () => {
   }, [time])
   return (
     <div className={classes.container}>
-      <div className={classes.date}>{date}</div>
-      <div className={classes.time}>{time}</div>
+      <Typography variant='h5'>{date}</Typography>
+      <Typography variant='h3'>{time}</Typography>
     </div>
   )
 }

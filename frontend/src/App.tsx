@@ -1,16 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import CreateTodo from './components/CreateTodo';
-import Header from './components/MainPage/Header';
 import MainPage from './components/MainPage';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Header />
       <Switch>
-        <Route path='/create'>
-          <CreateTodo />
+        <Route path='/create_periodic'>
+          <CreateTodo todoType={'periodic'}/>
+        </Route>
+        <Route path='/create_temporary'>
+          <CreateTodo todoType={'temporary'}/>
         </Route>
         <Route path='/'>
           <MainPage />

@@ -2,10 +2,32 @@ import React from 'react';
 import { format, parseJSON, sub } from 'date-fns';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, TextField, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 import todoService from '../services/todo'
 import keyboardService from '../services/keyboard'
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  container: {
+    margin: 10,
+  },
+  root: {
+    fontSize: '2rem'
+  },
+  buttonContainer: {
+    display: 'flex',
+  },
+  createButton: {
+    flex: 1,
+    margin: 10
+  },
+  cancelButton: {
+    flex: 1,
+    margin: 10
+  }
+})
 
 const validationSchema = yup.object({
   name: yup
@@ -17,18 +39,18 @@ const validationSchema = yup.object({
     .required('interval days is required'),
 });
 
-const CreateTodo: React.FC = () => {
+const CreateTodo: React.FC<{todoType: 'periodic' | 'temporary'}> = ({ todoType }) => {
   const history = useHistory()
+  const classes = useStyles()
   const formik = useFormik({
     initialValues: {
-      todoType: 'temporary',
       name: '',
       desiredIntervalDays: 1,
       deadline: format(new Date(), "yyyy-MM-dd'T'HH:mm")
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if (values.todoType === 'temporary') {
+      if (todoType === 'temporary') {
         await todoService.create('/temporary_todos', {
           name: values.name,
           deadline: sub(parseJSON(`${values.deadline}:00`), { hours: 9 })
@@ -45,20 +67,14 @@ const CreateTodo: React.FC = () => {
   });
 
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Todo type</FormLabel>
-          <RadioGroup row aria-label="todo type" name="todoType" value={formik.values.todoType} onChange={formik.handleChange}>
-            <FormControlLabel value="temporary" control={<Radio />} label="Temporary" />
-            <FormControlLabel value="periodic" control={<Radio />} label="Periodic" />
-          </RadioGroup>
-        </FormControl>
+    <div className={classes.container}>
+      <Typography variant='h5'>{todoType === 'temporary' ? '一回': '繰り返し'}タスクの追加</Typography>
+      <form className={classes.root} onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth
           id="name"
           name="name"
-          label="Name"
+          label="タスク名"
           value={formik.values.name}
           onChange={formik.handleChange}
           onFocus={() => {
@@ -68,11 +84,12 @@ const CreateTodo: React.FC = () => {
           helperText={formik.touched.name && formik.errors.name}
         />
         {
-          formik.values.todoType === 'temporary' ? 
+          todoType === 'temporary' ? 
             <TextField
+              fullWidth
               id="deadline"
               name="deadline"
-              label="deadline"
+              label="期限"
               type="datetime-local"
               value={formik.values.deadline}
               onChange={formik.handleChange}
@@ -84,7 +101,7 @@ const CreateTodo: React.FC = () => {
               fullWidth
               id="desiredIntervalDays"
               name="desiredIntervalDays"
-              label="desired interval days"
+              label="周期(日)"
               type="number"
               value={formik.values.desiredIntervalDays}
               onChange={formik.handleChange}
@@ -92,9 +109,14 @@ const CreateTodo: React.FC = () => {
               helperText={formik.touched.desiredIntervalDays && formik.errors.desiredIntervalDays}
             />
         }
-        <Button color="primary" variant="contained" fullWidth type="submit">
-          Add
-        </Button>
+        <div className={classes.buttonContainer}>
+          <Button size='large' className={classes.createButton} color="primary" variant="contained" type="submit">
+            追加
+          </Button>
+          <Button size='large' className={classes.cancelButton} color="secondary" variant="contained" component={Link} to="/">
+            キャンセル
+          </Button>
+        </div>
       </form>
     </div>
   );

@@ -4,11 +4,14 @@ import { ja } from 'date-fns/locale';
 import todoService from '../../../services/todo'
 import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend } from '../../../types'
 import TemporaryTodo from './TemporaryTodo'
-import { makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import { AddCircleOutline } from '@material-ui/icons'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   container: {
-    flex: 1
+    flex: 1,
+    marginLeft: 5,
   }
 })
 //TODO: pick same logic between PeriodicTodos and TemporaryTodos and create wrapping component
@@ -71,10 +74,13 @@ const TemporaryTodos: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      <div>一時タスク</div>
+      <Typography variant='h5'>一回タスク</Typography>
       {sortedTodos.map(todo => (
         <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick}/>
       ))}
+      <IconButton component={Link} to='/create_temporary'>
+        <AddCircleOutline fontSize='large'/>
+      </IconButton>
     </div>
   )
 }

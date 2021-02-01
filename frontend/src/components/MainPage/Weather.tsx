@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core'
 
 const WEATHER_FETCH_PERIOD = 1000 * 60 * 10
 
 const useStyles = makeStyles({
-  container: {
-    display: 'flex'
-  },
   mainTempContainer: {
     display: 'flex',
     flexDirection: 'column'
@@ -15,19 +13,16 @@ const useStyles = makeStyles({
   subTempContainer: {
     display: 'flex',
     flexDirection: 'column',
-    fontSize: '1rem'
-  },
-  mainTemp: {
-    fontSize: '1.5rem'
-  },
-  feelingTemp: {
-    fontSize: '1rem'
   },
   maxTemp: {
-    color: 'red'
+    color: 'red',
+    marginBottom: 10
   },
   minTemp: {
-    color: 'blue'
+    color: 'blue',
+  },
+  humidity: {
+    marginBottom: 10
   }
 })
 const Weather: React.FC = () => {
@@ -64,29 +59,29 @@ const Weather: React.FC = () => {
     return () => {clearInterval(intervalId)}
   }, [weather])
   return (
-    <div className={classes.container}>
+    <>
       <img src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`} />
       <div className={classes.mainTempContainer}>
-        <div className={classes.mainTemp}>{weather.temp}℃</div>
-        <div className={classes.feelingTemp}>体感{weather.feelingTemp}℃</div>
+        <Typography variant='h4'>{weather.temp}℃</Typography>
+        <Typography variant='h5'>体感{weather.feelingTemp}℃</Typography>
       </div>
       <div className={classes.subTempContainer}>
-        <div className={classes.maxTemp}>
+        <Typography variant='h5' className={classes.maxTemp}>
           {weather.tempMax}℃
-        </div>
-        <div className={classes.minTemp}>
+        </Typography>
+        <Typography variant='h5' className={classes.minTemp}>
           {weather.tempMin}℃
-        </div>
+        </Typography>
       </div>
       <div className={classes.subTempContainer}>
-        <div>
+        <Typography variant='h5' className={classes.humidity}>
           {weather.humidity}%
-        </div>
-        <div>
+        </Typography>
+        <Typography variant='h5'>
           {weather.windSpeed}m/s
-        </div>
+        </Typography>
       </div>
-    </div>
+    </>
   )
 }
 

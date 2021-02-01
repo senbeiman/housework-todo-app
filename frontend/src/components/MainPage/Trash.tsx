@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { differenceInDays } from 'date-fns';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
+import { Info } from '@material-ui/icons'
 
 const useStyles = makeStyles({
-  trashName: {
-    fontWeight: 'bold'
-  }
+  container: {
+    margin: 10,
+    display: 'flex',
+    alignItems: 'center'
+  },
 })
 const Trash: React.FC = () => {
   const classes = useStyles()
@@ -44,7 +47,11 @@ const Trash: React.FC = () => {
     const intervalId = setInterval(updateTrash, 1000 * 60)
     return () => {clearInterval(intervalId)}
   }, [trash])
-  return <>{trash && <div>明日は<span className={classes.trashName}>{trash}</span>収集日</div>}</>
+  return <>{trash && <div className={classes.container}>
+    <Info fontSize='large' color='primary'/>
+    <Typography variant='h5'>明日は<strong>{trash}</strong>ゴミ収集日</Typography>
+  </div>}
+  </>
 }
 
 export default Trash;

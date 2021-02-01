@@ -2,13 +2,20 @@ import React  from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TemporaryTodo as Todo } from '../../../types'
-import { makeStyles, Card, CardContent, CardActions } from '@material-ui/core';
+import { makeStyles, Card, CardContent, CardActions, IconButton, Typography } from '@material-ui/core';
+import { Done } from '@material-ui/icons'
 
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'yellow',
-    margin: 10,
-  }
+    marginTop: 10,
+  },
+  cardContent: {
+    paddingBottom: 0
+  },
+  cardActions: {
+    paddingTop: 0
+  },
 })
 interface Props {
   todo: Todo,
@@ -25,19 +32,21 @@ const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick }) => {
   }
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <div>
+      <CardContent className={classes.cardContent}>
+        <Typography variant='h5'>
           {todo.name}
-        </div>
-        <div>
+        </Typography>
+        <Typography color='textSecondary'>
           期限：{format(todo.deadline, 'yyyy/MM/dd(E) HH:mm', { locale: ja })} 
-        </div>
-        <div>
+        </Typography>
+        <Typography variant='body1'>
           {generateAdvice(todo)}
-        </div>
+        </Typography>
       </CardContent>
-      <CardActions>
-        <button onClick={() => {onDoneClick(todo.id)}}>done</button>
+      <CardActions className={classes.cardActions}>
+        <IconButton>
+          <Done onClick={() => {onDoneClick(todo.id)}}/>
+        </IconButton>
       </CardActions>
     </Card>
   )

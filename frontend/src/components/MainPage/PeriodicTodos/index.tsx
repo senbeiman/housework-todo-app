@@ -3,11 +3,14 @@ import todoService from '../../../services/todo'
 import { startOfDay, differenceInDays, startOfToday, parseJSON } from 'date-fns';
 import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend } from '../../../types';
 import PeriodicTodo from './PeriodicTodo'
-import { makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import { AddCircleOutline } from '@material-ui/icons'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   container: {
-    flex: 1
+    flex: 1,
+    marginRight: 5,
   }
 })
 
@@ -106,10 +109,13 @@ const PeriodicTodos: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      <div>定期タスク</div>
+      <Typography variant='h5'>繰り返しタスク</Typography>
       {sortedTodos.map(todo => (
         <PeriodicTodo key={todo.id} todo={todo} onDeleteClick={onDeleteClick} onDoneClick={onDoneClick}/>
       ))}
+      <IconButton component={Link} to='/create_periodic'>
+        <AddCircleOutline fontSize='large'/>
+      </IconButton>
     </div>
   )
 }

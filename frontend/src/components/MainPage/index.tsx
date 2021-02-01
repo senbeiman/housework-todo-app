@@ -10,14 +10,17 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    margin: 10
   },
   headContainer: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 10
   },
   todosContainer: {
-    display: 'flex'
+    display: 'flex',
+    margin: 10,
+    justifyContent: 'space-between'
   }
 
 })

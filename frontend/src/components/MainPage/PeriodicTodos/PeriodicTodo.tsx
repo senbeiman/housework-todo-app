@@ -1,11 +1,22 @@
 import React  from 'react';
 import { PeriodicTodo as Todo } from '../../../types';
-import { makeStyles, Card, CardContent, CardActions } from '@material-ui/core';
+import { makeStyles, Card, CardContent, CardActions, IconButton, Typography } from '@material-ui/core';
+import { Delete, Done } from '@material-ui/icons'
 
 const useStyles = makeStyles({
   root: {
-    margin: 10,
-    backgroundColor: 'yellow'
+    marginTop: 10,
+    backgroundColor: 'yellow',
+  },
+  cardContent: {
+    paddingBottom: 0
+  },
+  cardActions: {
+    paddingTop: 0
+  },
+  dayContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 })
 interface Props {
@@ -29,25 +40,32 @@ const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => 
   }
   return (
     <Card className={classes.root}> 
-      <CardContent>
-        <div>
-          {todo.name} {todo.desiredIntervalDays}日毎 
+      <CardContent className={classes.cardContent}>
+        <Typography variant='h5'>
+          {todo.name} 
+        </Typography>
+        <div className={classes.dayContainer}>
+          <Typography color='textSecondary'>
+            {todo.desiredIntervalDays}日毎 
+          </Typography>
+          <Typography color='textSecondary'>
+            { (todo.lastUpdatedDistance !== null) ?
+              `最終実施：${todo.lastUpdatedDistance === 0 ? '今日' : `${todo.lastUpdatedDistance}日前`}`
+              : '未実施'
+            }
+          </Typography>
         </div>
-        { (todo.lastUpdatedDistance !== null) ?
-          <div>
-            最終実施：{todo.lastUpdatedDistance === 0 ? '今日' : `${todo.lastUpdatedDistance}日前`}
-          </div>
-          : <div>
-            未実施
-          </div>
-        }
-        <div>
+        <Typography variant='body1'>
           {generateAdvice(todo.daysLeftToDesired)}
-        </div>
+        </Typography>
       </CardContent>
-      <CardActions>
-        <button onClick={() => {onDeleteClick(todo.id)}}>delete</button>
-        <button onClick={() => {onDoneClick(todo)}}>done</button>
+      <CardActions className={classes.cardActions}>
+        <IconButton onClick={() => {onDeleteClick(todo.id)}}>
+          <Delete />
+        </IconButton>
+        <IconButton onClick={() => {onDoneClick(todo)}}>
+          <Done />
+        </IconButton>
       </CardActions>
     </Card>
   )
