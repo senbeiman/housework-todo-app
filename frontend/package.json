@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=development react-scripts start",
-    "build": "rm -rf ../backend/build-react && react-scripts build && cp -r build ../backend/build-react",
+    "build": "rm -rf ../backend/build-react && react-scripts --max_old_space_size=4096 build && cp -r build ../backend/build-react",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{ts,tsx}'"

@@ -38,6 +38,7 @@ const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => 
       return `ベストタイミングを${-daysLeftToDesired}日過ぎています`
     }
   }
+  // TODO: extract same card structure between periodic and temporary
   return (
     <Card className={classes.root}> 
       <CardContent className={classes.cardContent}>
