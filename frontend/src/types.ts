@@ -6,7 +6,7 @@ export interface PeriodicTodoBackend {
 }
 export interface PeriodicTodoSend {
   name: string,
-  last_updated_at: Date | null,
+  last_updated_at?: Date | null,
   desired_interval_days: number
 }
 export interface PeriodicTodo {
@@ -33,3 +33,8 @@ export interface TemporaryTodo {
   minutesLeftToDeadline: number,
   distanceToDeadline: string
 }
+export interface FormValues {
+    name: string
+    deadline: string
+    desiredIntervalDays: number
+  }

@@ -19,9 +19,10 @@ const useStyles = makeStyles({
 })
 interface Props {
   todo: Todo,
-  onDoneClick: (id: number) => void
+  onDoneClick: (id: number) => void,
+  onCardClick: (todo: Todo) => void
 }
-const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick }) => {
+const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick, onCardClick }) => {
   const classes = useStyles()
   const generateAdvice = (todo: Todo) => {
     if (todo.minutesLeftToDeadline >= 0) {
@@ -31,7 +32,7 @@ const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick }) => {
     }
   }
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={() => {onCardClick(todo)}}>
       <CardContent className={classes.cardContent}>
         <Typography variant='h5'>
           {todo.name}
@@ -45,7 +46,7 @@ const TemporaryTodo: React.FC<Props> = ({ todo, onDoneClick }) => {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <IconButton>
-          <Done onClick={() => {onDoneClick(todo.id)}}/>
+          <Done onClick={(e) => {e.stopPropagation();onDoneClick(todo.id)}}/>
         </IconButton>
       </CardActions>
     </Card>

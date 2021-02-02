@@ -18,7 +18,7 @@ const remove = async (path: string): Promise<unknown> => {
   return data
 }
 
-const edit = async (path: string, todo: PeriodicTodoSend): Promise<unknown> => {
+const edit = async (path: string, todo: PeriodicTodoSend | TemporaryTodoSend): Promise<unknown> => {
   const { data } = await axios.put(baseUrl + path, todo)
   return data
 }

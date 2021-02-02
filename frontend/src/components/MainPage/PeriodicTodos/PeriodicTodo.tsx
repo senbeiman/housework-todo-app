@@ -1,7 +1,7 @@
 import React  from 'react';
 import { PeriodicTodo as Todo } from '../../../types';
 import { makeStyles, Card, CardContent, CardActions, IconButton, Typography } from '@material-ui/core';
-import { Delete, Done } from '@material-ui/icons'
+import { Done } from '@material-ui/icons'
 
 const useStyles = makeStyles({
   root: {
@@ -21,11 +21,11 @@ const useStyles = makeStyles({
 })
 interface Props {
   todo: Todo,
-  onDeleteClick: (id: number) => void,
   onDoneClick: (todo: Todo) => void
+  onCardClick: (todo: Todo) => void
 }
 
-const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => {
+const PeriodicTodo: React.FC<Props> = ({ todo, onDoneClick, onCardClick }) => {
   const classes = useStyles()
   const generateAdvice = (daysLeftToDesired: number | null) => {
     if (daysLeftToDesired === null) {
@@ -40,7 +40,7 @@ const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => 
   }
   // TODO: extract same card structure between periodic and temporary
   return (
-    <Card className={classes.root}> 
+    <Card className={classes.root} onClick={() => {onCardClick(todo)}}>
       <CardContent className={classes.cardContent}>
         <Typography variant='h5'>
           {todo.name} 
@@ -61,10 +61,7 @@ const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => 
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <IconButton onClick={() => {onDeleteClick(todo.id)}}>
-          <Delete />
-        </IconButton>
-        <IconButton onClick={() => {onDoneClick(todo)}}>
+        <IconButton onClick={(e) => {e.stopPropagation();onDoneClick(todo)}}>
           <Done />
         </IconButton>
       </CardActions>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { differenceInMinutes, parseJSON, formatDistanceToNowStrict } from 'date-fns';
+import { differenceInMinutes, parseJSON, formatDistanceToNowStrict, sub } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import todoService from '../../../services/todo'
-import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend } from '../../../types'
+import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend, FormValues } from '../../../types'
 import TemporaryTodo from './TemporaryTodo'
 import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons'
-import { Link } from 'react-router-dom';
+import CreateTodo from '../../TodoFormModal';
 
 const useStyles = makeStyles({
   container: {
@@ -18,6 +18,8 @@ const useStyles = makeStyles({
 const TemporaryTodos: React.FC = () => {
   const classes = useStyles()
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
 
   const calculateParametersToUpdate = (deadline: Date) => {
     const distanceToDeadline = formatDistanceToNowStrict(deadline, { roundingMethod: 'floor', locale: ja })
@@ -28,26 +30,23 @@ const TemporaryTodos: React.FC = () => {
     }
   }
   
-  const onDoneClick = async (id: number) => {
-    await todoService.remove(`/temporary_todos/${id}`)
-    const todosToUpdate = todos.filter(todo => todo.id !== id)
-    setTodos(todosToUpdate)
+
+  const parseTodo = (todo: TodoBackend) => {
+    const deadline = parseJSON(todo.deadline)
+    const { distanceToDeadline, minutesLeftToDeadline } = calculateParametersToUpdate(deadline)
+    return {
+      id: todo.id,
+      name: todo.name,
+      deadline,
+      distanceToDeadline,
+      minutesLeftToDeadline
+    }
   }
   useEffect(() => {
     const getTemporaryTodos = async () => {
       const data = await todoService.get('/temporary_todos')
       // TODO: parse data from API
-      const todosToUpdate = (data as TodoBackend[]).map((todo) => {
-        const deadline = parseJSON(todo.deadline)
-        const { distanceToDeadline, minutesLeftToDeadline } = calculateParametersToUpdate(deadline)
-        return {
-          id: todo.id,
-          name: todo.name,
-          deadline,
-          distanceToDeadline,
-          minutesLeftToDeadline
-        }
-      })
+      const todosToUpdate = (data as TodoBackend[]).map(parseTodo)
       setTodos(todosToUpdate)
     }
     getTemporaryTodos()
@@ -72,15 +71,44 @@ const TemporaryTodos: React.FC = () => {
     a.minutesLeftToDeadline - b.minutesLeftToDeadline
   )
 
+  const handleModalClose = () => {
+    setModalOpen(false)
+    setSelectedTodo(null)
+  }
+  const handleCardClick = (todo: Todo) => {
+    setSelectedTodo(todo)
+    setModalOpen(true)
+  }
+  const onDoneClick = async (id: number) => {
+    await todoService.remove(`/temporary_todos/${id}`)
+    const todosToUpdate = todos.filter(todo => todo.id !== id)
+    setTodos(todosToUpdate)
+    handleModalClose()
+  } 
+  const handleModalSubmit = async (values: FormValues) => {
+    const newValues = {
+      name: values.name,
+      deadline: sub(parseJSON(`${values.deadline}:00`), { hours: 9 })
+    }
+    if (selectedTodo) {
+      const data = await todoService.edit(`/temporary_todos/${selectedTodo.id}`, newValues)
+      setTodos(todos.map(todo => todo.id === selectedTodo.id ? parseTodo(data as TodoBackend) : todo))
+    } else {
+      const data = await todoService.create('/temporary_todos', newValues)
+      setTodos([...todos, parseTodo(data as TodoBackend)])
+    }
+    handleModalClose()
+  }
   return (
     <div className={classes.container}>
       <Typography variant='h5'>一回タスク</Typography>
       {sortedTodos.map(todo => (
-        <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick}/>
+        <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
       ))}
-      <IconButton component={Link} to='/create_temporary'>
+      <IconButton onClick={()=>{setModalOpen(true)}}>
         <AddCircleOutline fontSize='large'/>
-      </IconButton>
+      </IconButton> 
+      <CreateTodo open={modalOpen} handleClose={handleModalClose} selectedTodo={selectedTodo} todoType='temporary' handleSubmit={handleModalSubmit} handleDelete={onDoneClick}/>
     </div>
   )
 }
