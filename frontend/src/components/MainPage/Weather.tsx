@@ -39,7 +39,7 @@ const Weather: React.FC = () => {
  
   useEffect(() => {
     const getWeather = async () => {
-      const url = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_WEATHER_URL_PROD : process.env.REACT_APP_WEATHER_URL_DEV
+      const url = process.env.REACT_APP_WEATHER_URL
       if (!url) {
         throw new Error('no url for weather set')
       }
