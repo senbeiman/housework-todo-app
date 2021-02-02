@@ -65,6 +65,9 @@ const CreateTodo: React.FC<{todoType: 'periodic' | 'temporary'}> = ({ todoType }
       history.push('/')
     },
   });
+  const toggleKeyboard = () => {
+    keyboardService.get('/toggle_keyboard')
+  }
 
   return (
     <div className={classes.container}>
@@ -77,9 +80,8 @@ const CreateTodo: React.FC<{todoType: 'periodic' | 'temporary'}> = ({ todoType }
           label="タスク名"
           value={formik.values.name}
           onChange={formik.handleChange}
-          onFocus={() => {
-            keyboardService.get('/keyboard_show')
-          }}
+          onFocus={toggleKeyboard}
+          onBlur={toggleKeyboard}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
@@ -105,6 +107,8 @@ const CreateTodo: React.FC<{todoType: 'periodic' | 'temporary'}> = ({ todoType }
               type="number"
               value={formik.values.desiredIntervalDays}
               onChange={formik.handleChange}
+              onFocus={toggleKeyboard}
+              onBlur={toggleKeyboard}
               error={formik.touched.desiredIntervalDays && Boolean(formik.errors.desiredIntervalDays)}
               helperText={formik.touched.desiredIntervalDays && formik.errors.desiredIntervalDays}
             />
