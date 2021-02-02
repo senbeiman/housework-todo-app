@@ -46,7 +46,7 @@ const Trash: React.FC = () => {
     updateTrash()
     const intervalId = setInterval(updateTrash, 1000 * 60)
     return () => {clearInterval(intervalId)}
-  }, [trash])
+  }, [])
   return <>{trash && <div className={classes.container}>
     <Info fontSize='large' color='primary'/>
     <Typography variant='h5'>明日は<strong>{trash}</strong>ゴミ収集日</Typography>

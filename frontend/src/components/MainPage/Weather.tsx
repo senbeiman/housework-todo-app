@@ -57,7 +57,7 @@ const Weather: React.FC = () => {
     getWeather()
     const intervalId = setInterval(getWeather, WEATHER_FETCH_PERIOD)
     return () => {clearInterval(intervalId)}
-  }, [weather])
+  }, [])
   return (
     <>
       <img src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`} />

@@ -26,7 +26,7 @@
     "yup": "^0.32.8"
   },
   "scripts": {
-    "start": "NODE_ENV=development react-scripts start",
+    "start": "react-scripts start",
     "build": "rm -rf ../backend/build-react && react-scripts build && cp -r build ../backend/build-react",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

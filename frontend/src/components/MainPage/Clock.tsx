@@ -22,7 +22,7 @@ const Clock: React.FC = () => {
       setDatetime(new Date())
     }, 1000)
     return () => {clearInterval(intervalId)}
-  }, [time])
+  }, [])
   return (
     <div className={classes.container}>
       <Typography variant='h5'>{date}</Typography>
