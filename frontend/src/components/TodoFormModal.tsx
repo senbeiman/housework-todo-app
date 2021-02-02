@@ -23,13 +23,18 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     display: 'flex',
   },
-  edgeButton: {
+  leftButton: {
     flex: 1,
+    marginRight: 5
+  },
+  rightButton: {
+    flex: 1,
+    marginLeft: 5,
   },
   centerButton: {
     flex: 1,
-    marginLeft: 10,
-    marginRight: 10
+    marginLeft: 5,
+    marginRight: 5
   },
   textField: {
     marginBottom: 10
@@ -136,7 +141,7 @@ const CreateTodo: React.FC<Props> = ({ todoType, open, handleClose, selectedTodo
               />
           }
           <div className={classes.buttonContainer}>
-            <Button size='large' className={classes.edgeButton} color="primary" variant="contained" type="submit">
+            <Button size='large' className={classes.leftButton} color="primary" variant="contained" type="submit">
               {selectedTodo ? '更新' : '追加'}
             </Button>
             {selectedTodo && 
@@ -144,7 +149,7 @@ const CreateTodo: React.FC<Props> = ({ todoType, open, handleClose, selectedTodo
                 削除
               </Button>
             }
-            <Button size='large' className={classes.edgeButton} color="secondary" variant="contained" onClick={handleClose}>
+            <Button size='large' className={classes.rightButton} color="secondary" variant="contained" onClick={handleClose}>
               キャンセル
             </Button>
           </div>
