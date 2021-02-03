@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     marginLeft: 5,
   },
   todos: {
-    overflow: 'scroll',
+    overflow: 'auto',
     maxHeight: '70vh'
   }
 })
