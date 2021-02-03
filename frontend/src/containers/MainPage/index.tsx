@@ -14,8 +14,7 @@ const useStyles = makeStyles({
   headContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    margin: 10
+    margin: 10,
   },
   todosContainer: {
     display: 'flex',

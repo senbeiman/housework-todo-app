@@ -1,6 +1,6 @@
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
-import MainPage from './components/MainPage';
+import MainPage from './containers/MainPage';
 
 const theme = createMuiTheme({
   typography: {

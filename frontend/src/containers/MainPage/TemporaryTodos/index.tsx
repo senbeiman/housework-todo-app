@@ -6,12 +6,16 @@ import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend, FormValues 
 import TemporaryTodo from './TemporaryTodo'
 import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons'
-import CreateTodo from '../../TodoFormModal';
+import CreateTodo from '../components/TodoFormModal';
 
 const useStyles = makeStyles({
   container: {
     flex: 1,
     marginLeft: 5,
+  },
+  todos: {
+    overflow: 'scroll',
+    maxHeight: '70vh'
   }
 })
 //TODO: pick same logic between PeriodicTodos and TemporaryTodos and create wrapping component
@@ -102,9 +106,11 @@ const TemporaryTodos: React.FC = () => {
   return (
     <div className={classes.container}>
       <Typography variant='h5'>一回タスク</Typography>
-      {sortedTodos.map(todo => (
-        <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
-      ))}
+      <div className={classes.todos}>
+        {sortedTodos.map(todo => (
+          <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
+        ))}
+      </div>
       <IconButton onClick={()=>{setModalOpen(true)}}>
         <AddCircleOutline fontSize='large'/>
       </IconButton> 

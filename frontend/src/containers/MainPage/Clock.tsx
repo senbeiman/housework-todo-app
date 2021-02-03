@@ -8,13 +8,14 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    width: '30%'
+    flex: 1,
+    marginTop: 10
   },
 })
 const Clock: React.FC = () => {
   const classes = useStyles()
   const [datetime, setDatetime] = useState(new Date())
-  const date = format(datetime, 'yyyy/MM/dd(E)', { locale: ja })
+  const date = format(datetime, 'yyyy/M/d(E)', { locale: ja })
   const time = format(datetime, 'HH:mm:ss', { locale: ja })
  
   useEffect(() => {

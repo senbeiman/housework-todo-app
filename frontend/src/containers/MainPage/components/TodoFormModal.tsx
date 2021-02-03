@@ -3,9 +3,10 @@ import { format } from 'date-fns';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, TextField, Typography } from '@material-ui/core';
-import keyboardService from '../services/keyboard'
+import keyboardService from '../../../services/keyboard'
 import { makeStyles, Modal } from '@material-ui/core';
-import { TemporaryTodo, PeriodicTodo, FormValues } from '../types';
+import { TemporaryTodo, PeriodicTodo, FormValues } from '../../../types';
+import { Delete } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,19 +23,16 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     display: 'flex',
+    gap: 10
   },
-  leftButton: {
-    flex: 1,
-    marginRight: 5
+  okButton: {
+    flex: 2,
   },
-  rightButton: {
-    flex: 1,
-    marginLeft: 5,
+  cancelButton: {
+    flex: 2,
   },
-  centerButton: {
+  deleteButton: {
     flex: 1,
-    marginLeft: 5,
-    marginRight: 5
   },
   textField: {
     marginBottom: 10
@@ -141,17 +139,17 @@ const CreateTodo: React.FC<Props> = ({ todoType, open, handleClose, selectedTodo
               />
           }
           <div className={classes.buttonContainer}>
-            <Button size='large' className={classes.leftButton} color="primary" variant="contained" type="submit">
+            <Button size='large' className={classes.okButton} color="primary" variant="contained" type="submit">
               {selectedTodo ? '更新' : '追加'}
             </Button>
+            <Button size='large' className={classes.cancelButton} color="secondary" variant="contained" onClick={handleClose}>
+              キャンセル
+            </Button>
             {selectedTodo && 
-              <Button size='large' className={classes.centerButton} color="secondary" variant="contained" onClick={()=>{handleDelete(selectedTodo.id)}}>
+              <Button startIcon={<Delete />} size='large' className={classes.deleteButton} color="secondary" variant="contained" onClick={()=>{handleDelete(selectedTodo.id)}}>
                 削除
               </Button>
             }
-            <Button size='large' className={classes.rightButton} color="secondary" variant="contained" onClick={handleClose}>
-              キャンセル
-            </Button>
           </div>
         </form>
       </div>

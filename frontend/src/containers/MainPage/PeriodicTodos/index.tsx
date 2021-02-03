@@ -5,12 +5,16 @@ import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend, FormValues } 
 import PeriodicTodo from './PeriodicTodo'
 import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons'
-import CreateTodo from '../../TodoFormModal';
+import CreateTodo from '../components/TodoFormModal';
 
 const useStyles = makeStyles({
   container: {
     flex: 1,
     marginRight: 5,
+  },
+  todos: {
+    overflow: 'scroll',
+    maxHeight: '70vh'
   }
 })
 
@@ -141,9 +145,11 @@ const PeriodicTodos: React.FC = () => {
   return (
     <div className={classes.container}>
       <Typography variant='h5'>繰り返しタスク</Typography>
-      {sortedTodos.map(todo => (
-        <PeriodicTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
-      ))}
+      <div className={classes.todos}>
+        {sortedTodos.map(todo => (
+          <PeriodicTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
+        ))}
+      </div>
       <IconButton onClick={()=>{setModalOpen(true)}}>
         <AddCircleOutline fontSize='large'/>
       </IconButton>
