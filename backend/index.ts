@@ -10,8 +10,8 @@ app.use(express.static('build-react'))
 
 const PORT = 3001;
 
-app.get('/keyboard_show', (_req, res) => {
-  childProcess.exec('DISPLAY=:0 wmctrl -a keyboard')
+app.get('/toggle_keyboard', (_req, res) => {
+  childProcess.exec('DISPLAY=:0 xdotool key alt+shift+i')
   res.send()
 });
 

@@ -1,55 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import todoService from '../services/todo'
+import todoService from '../../../services/todo'
 import { startOfDay, differenceInDays, startOfToday, parseJSON } from 'date-fns';
-import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend } from '../types';
+import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend, FormValues } from '../../../types';
+import PeriodicTodo from './PeriodicTodo'
+import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import { AddCircleOutline } from '@material-ui/icons'
+import CreateTodo from '../components/TodoFormModal';
 
-
-interface Props {
-  todo: Todo,
-  onDeleteClick: (id: number) => void,
-  onDoneClick: (todo: Todo) => void
-}
-const PeriodicTodo: React.FC<Props> = ({ todo, onDeleteClick, onDoneClick }) => {
-  const generateAdvice = (daysLeftToDesired: number | null) => {
-    if (daysLeftToDesired === null) {
-      return null
-    } else if (daysLeftToDesired >= 1) {
-      return `ベストタイミングまであと${daysLeftToDesired}日`
-    } else if (daysLeftToDesired === 0) {
-      return `今日やるのがベストです`
-    } else {
-      return `ベストタイミングを${-daysLeftToDesired}日過ぎています`
-    }
+const useStyles = makeStyles({
+  container: {
+    flex: 1,
+    marginRight: 5,
+  },
+  todos: {
+    overflow: 'scroll',
+    maxHeight: '70vh'
   }
-  return (
-    <div> 
-      <div>
-        {todo.name} {todo.desiredIntervalDays}日毎 
-        <button onClick={() => {onDeleteClick(todo.id)}}>delete</button>
-        <button onClick={() => {onDoneClick(todo)}}>done</button>
-      </div>
-      { (todo.lastUpdatedDistance !== null) ?
-        <div>
-          最終実施：{todo.lastUpdatedDistance === 0 ? '今日' : `${todo.lastUpdatedDistance}日前`}
-        </div>
-        : <div>
-          未実施
-        </div>
-      }
-      <div>
-        {generateAdvice(todo.daysLeftToDesired)}
-      </div>
-    </div>
-  )
-}
+})
+
 const PeriodicTodos: React.FC = () => {
+  const classes = useStyles()
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
   
-  const onDeleteClick = async (id: number) => {
-    await todoService.remove(`/periodic_todos/${id}`)
-    const todosToUpdate = todos.filter(todo => todo.id !== id)
-    setTodos(todosToUpdate)
-  }
+
   const calculateParametersToUpdate = ({ lastUpdatedAt , desiredIntervalDays }: {lastUpdatedAt: Date | null, desiredIntervalDays: number}) => {
     const calculateDistanceFromToday = (lastUpdatedAt: Date) => (
       differenceInDays(startOfToday(), startOfDay(lastUpdatedAt))
@@ -89,17 +64,18 @@ const PeriodicTodos: React.FC = () => {
     )
     setTodos(todosToUpdate)
   }
+  const parseTodo = (todo: TodoBackend) => {
+    return {
+      id: todo.id,
+      name: todo.name,
+      ...calculateParametersToShow(todo)
+    }
+  }
   useEffect(() => {
     const getPeriodicalTodos = async () => {
       const data = await todoService.get('/periodic_todos')
       // TODO: parse data from API
-      const todosToUpdate = (data as TodoBackend[]).map((todo) => {
-        return {
-          id: todo.id,
-          name: todo.name,
-          ...calculateParametersToShow(todo)
-        }
-      })
+      const todosToUpdate = (data as TodoBackend[]).map(parseTodo)
       setTodos(todosToUpdate)
     }
     getPeriodicalTodos()
@@ -134,12 +110,50 @@ const PeriodicTodos: React.FC = () => {
     return a.daysLeftToDesired - b.daysLeftToDesired
   })
 
+  const handleModalClose = () => {
+    setModalOpen(false)
+    setSelectedTodo(null)
+  }
+  const handleCardClick = (todo: Todo) => {
+    setSelectedTodo(todo)
+    setModalOpen(true)
+  }
+
+  const handleModalSubmit = async (values: FormValues) => {
+    const updatedValues = {
+      name: values.name,
+      desired_interval_days: values.desiredIntervalDays,
+    }
+    if (selectedTodo) {
+      const data = await todoService.edit(`/periodic_todos/${selectedTodo.id}`, updatedValues)
+      setTodos(todos.map(todo => todo.id === selectedTodo.id ? parseTodo(data as TodoBackend) : todo))
+    } else {
+      const data = await todoService.create('/periodic_todos', {
+        ...updatedValues,
+        last_updated_at: null
+      })
+      setTodos([...todos, parseTodo(data as TodoBackend)])
+    }
+    handleModalClose()
+  }
+  const handleModalDelete = async (id: number) => {
+    await todoService.remove(`/periodic_todos/${id}`)
+    const todosToUpdate = todos.filter(todo => todo.id !== id)
+    setTodos(todosToUpdate)
+    handleModalClose()
+  }
   return (
-    <div>
-      <div>Periodic</div>
-      {sortedTodos.map(todo => (
-        <PeriodicTodo key={todo.id} todo={todo} onDeleteClick={onDeleteClick} onDoneClick={onDoneClick}/>
-      ))}
+    <div className={classes.container}>
+      <Typography variant='h5'>繰り返しタスク</Typography>
+      <div className={classes.todos}>
+        {sortedTodos.map(todo => (
+          <PeriodicTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
+        ))}
+      </div>
+      <IconButton onClick={()=>{setModalOpen(true)}}>
+        <AddCircleOutline fontSize='large'/>
+      </IconButton>
+      <CreateTodo open={modalOpen} handleClose={handleModalClose} selectedTodo={selectedTodo} todoType='periodic'  handleSubmit={handleModalSubmit} handleDelete={handleModalDelete}/>
     </div>
   )
 }
