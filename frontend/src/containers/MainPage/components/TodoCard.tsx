@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     borderLeft: 'solid',
     borderColor: theme.palette.divider,
     borderWidth: 2,
+    cursor: 'none',
     borderRadius: 0
   },
 }))
