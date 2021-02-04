@@ -10,7 +10,6 @@ const WEATHER_FETCH_PERIOD = 1000 * 60 * 10
 const useStyles = makeStyles({
   container: {
     display: 'flex',
-    flex:2,
     alignItems: 'flex-start'
   },
   textContainer: {
