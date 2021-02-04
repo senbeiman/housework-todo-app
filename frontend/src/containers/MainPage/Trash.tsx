@@ -47,11 +47,13 @@ const Trash: React.FC = () => {
     const intervalId = setInterval(updateTrash, 1000 * 60)
     return () => {clearInterval(intervalId)}
   }, [])
-  return <>{trash && <div className={classes.container}>
-    <Info fontSize='large' color='primary'/>
-    <Typography variant='h5'>明日は<strong>{trash}</strong>ゴミ収集日</Typography>
-  </div>}
-  </>
+  return (
+    <div className={classes.container}>
+      <Info fontSize='large' color='primary'/>
+      {trash ? <Typography variant='h5'>明日は<strong>{trash}</strong>ゴミ収集日</Typography>
+        : <Typography variant='h5'>明日はゴミ収集はありません</Typography>}
+    </div>
+  ) 
 }
 
 export default Trash;
