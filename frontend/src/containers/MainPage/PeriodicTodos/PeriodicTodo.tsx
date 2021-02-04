@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   dayContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   loop: {
     display: 'flex',
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
   done: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 })
 interface Props {
