@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between'
   },
   cardContent: {
-    margin: 10
+    margin: 10,
+    width: '100%'
   },
   icon: {
     color: theme.palette.success.main,
