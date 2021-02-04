@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    height: '100vh'
   },
   headContainer: {
     display: 'flex',
