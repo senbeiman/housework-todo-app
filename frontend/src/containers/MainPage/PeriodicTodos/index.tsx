@@ -102,10 +102,10 @@ const PeriodicTodos: React.FC = () => {
 
   const sortedTodos = [...todos].sort((a, b) => {
     if (!a.daysLeftToDesired) {
-      return 1
+      return -1
     }
     if (!b.daysLeftToDesired) {
-      return -1
+      return 1
     }
     return a.daysLeftToDesired - b.daysLeftToDesired
   })
