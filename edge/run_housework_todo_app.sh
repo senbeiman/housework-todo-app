@@ -3,7 +3,7 @@
 cd /home/pi/housework-todo-app
 git pull
 cd /home/pi/housework-todo-app/frontend
-yarn install
+yarn install --network-timeout 100000
 yarn build
 cd /home/pi/housework-todo-app/backend
 npm install
