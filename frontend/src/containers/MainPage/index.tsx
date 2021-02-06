@@ -20,6 +20,7 @@ const useStyles = makeStyles({
   todosContainer: {
     display: 'flex',
     margin: 10,
+    gap: 10,
     justifyContent: 'space-between'
   }
 

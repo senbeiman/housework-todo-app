@@ -10,7 +10,6 @@ import CreateTodo from '../components/TodoFormModal';
 const useStyles = makeStyles({
   container: {
     flex: 1,
-    marginRight: 5,
   },
   todos: {
     overflow: 'auto',
