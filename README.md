@@ -21,7 +21,11 @@ add this chrome-extension(https://chrome.google.com/webstore/detail/google-input
 ```
 alt+shift+i
 ```
-  
+install japanese fonts and set as system fonts in Settings > Appearance > Customize fonts
+```
+sudo apt-get install fonts-noto-cjk
+```
+[[Raspberry Pi][FileMaker] Chromium で Noto フォントを使う – with a Christian Wife](https://blog.withachristianwife.com/2020/05/20/noto-font-in-chromium/)   
 clone this repository, install dependent packages, build and run
 ```
 git clone https://github.com/senbeiman/housework-todo-app.git
