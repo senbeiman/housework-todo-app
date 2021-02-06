@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    height: '100vh'
+    height: '100vh',
   },
   headContainer: {
     display: 'flex',
@@ -19,8 +19,10 @@ const useStyles = makeStyles({
   },
   todosContainer: {
     display: 'flex',
-    margin: 10,
-    gap: 10,
+    marginBottom: 10,
+    marginTop: 10,
+    marginLeft: 5,
+    marginRight: 5,
     justifyContent: 'space-between'
   }
 

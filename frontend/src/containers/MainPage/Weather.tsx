@@ -10,7 +10,9 @@ const WEATHER_FETCH_PERIOD = 1000 * 60 * 10
 const useStyles = makeStyles({
   container: {
     display: 'flex',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    marginRight: -5,
+    marginTop: 5,
   },
   textContainer: {
     display: 'flex',
@@ -19,24 +21,22 @@ const useStyles = makeStyles({
   },
   parametersContainer: {
     display: 'flex',
-    gap: 10,
-    marginTop: 10
   },
   mainTempContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 10
   },
   subTempContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 10
   },
   subInfoContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 10
   },
+  typography: {
+    margin: 5
+  }
 })
 const Weather: React.FC = () => {
   const classes = useStyles()
@@ -79,28 +79,28 @@ const Weather: React.FC = () => {
       <div className={classes.textContainer}>
         <div className={classes.parametersContainer}>
           <div className={classes.mainTempContainer}>
-            <Typography variant='h4'>{weather.temp}℃</Typography>
-            <Typography variant='body1'>体感{weather.feelingTemp}℃</Typography>
+            <Typography className={classes.typography} variant='h4'>{weather.temp}℃</Typography>
+            <Typography className={classes.typography} variant='body1'>体感{weather.feelingTemp}℃</Typography>
           </div>
           <div className={classes.subTempContainer}>
-            <Typography variant='h5' color='secondary'>
+            <Typography className={classes.typography} variant='h5' color='secondary'>
               {weather.tempMax}℃
             </Typography>
-            <Typography variant='h5' color='primary'>
+            <Typography className={classes.typography} variant='h5' color='primary'>
               {weather.tempMin}℃
             </Typography>
           </div>
           <div className={classes.subInfoContainer}>
-            <Typography variant='h5'>
+            <Typography className={classes.typography} variant='h5'>
               {weather.humidity}%
             </Typography>
-            <Typography variant='h5'>
+            <Typography className={classes.typography} variant='h5'>
               {weather.windSpeed}m/s
             </Typography>
           </div>
         </div>
         <div>
-          <Typography variant='body1' color='textSecondary'>
+          <Typography className={classes.typography} variant='body1' color='textSecondary'>
             {weather.updatedAt}時点
           </Typography>
         </div>

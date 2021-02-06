@@ -23,16 +23,23 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     display: 'flex',
-    gap: 10
+    marginLeft: -5,
+    marginRight: -5
   },
   okButton: {
     flex: 2,
+    marginLeft: 5,
+    marginRight: 5
   },
   cancelButton: {
     flex: 2,
+    marginLeft: 5,
+    marginRight: 5
   },
   deleteButton: {
     flex: 1,
+    marginLeft: 5,
+    marginRight: 5
   },
   textField: {
     marginBottom: 10
