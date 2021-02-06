@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     margin: 10,
+    wordBreak: 'break-all',
     width: '100%'
   },
   icon: {
