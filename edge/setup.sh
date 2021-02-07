@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo apt-get install -y vim
 cd /home/pi/
 git clone https://github.com/senbeiman/housework-todo-app.git
 cd ./housework-todo-app/edge
