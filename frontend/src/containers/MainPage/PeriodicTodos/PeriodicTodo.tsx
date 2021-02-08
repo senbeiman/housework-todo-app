@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 })
 interface Props {
   todo: Todo,
-  onDoneClick: (todo: Todo) => void
+  onDoneClick: (id: number) => void
   onCardClick: (todo: Todo) => void
 }
 
@@ -39,7 +39,7 @@ const PeriodicTodo: React.FC<Props> = ({ todo, onDoneClick, onCardClick }) => {
     }
   }
   return (
-    <TodoCard onCardClick={() => {onCardClick(todo)}} onDoneClick={(e: React.MouseEvent) => {e.stopPropagation();onDoneClick(todo)}}>
+    <TodoCard onCardClick={() => {onCardClick(todo)}} onDoneClick={(e: React.MouseEvent) => {e.stopPropagation();onDoneClick(todo.id)}}>
       <Typography variant='h5'>
         {todo.name} 
       </Typography>

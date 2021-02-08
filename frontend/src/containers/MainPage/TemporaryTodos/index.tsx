@@ -3,28 +3,11 @@ import { differenceInMinutes, parseJSON, formatDistanceToNowStrict, sub } from '
 import { ja } from 'date-fns/locale';
 import todoService from '../../../services/todo'
 import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend, FormValues } from '../../../types'
-import TemporaryTodo from './TemporaryTodo'
-import { IconButton, makeStyles, Typography } from '@material-ui/core';
-import { AddCircleOutline } from '@material-ui/icons'
-import CreateTodo from '../components/TodoFormModal';
+import TodoList from '../components/TodoList';
 
-const useStyles = makeStyles({
-  container: {
-    flex: 1,
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  todos: {
-    overflow: 'auto',
-    maxHeight: '70vh'
-  }
-})
-//TODO: pick same logic between PeriodicTodos and TemporaryTodos and create wrapping component
+
 const TemporaryTodos: React.FC = () => {
-  const classes = useStyles()
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
 
   const calculateParametersToUpdate = (deadline: Date) => {
     const distanceToDeadline = formatDistanceToNowStrict(deadline, { roundingMethod: 'floor', locale: ja })
@@ -76,47 +59,33 @@ const TemporaryTodos: React.FC = () => {
     a.minutesLeftToDeadline - b.minutesLeftToDeadline
   )
 
-  const handleModalClose = () => {
-    setModalOpen(false)
-    setSelectedTodo(null)
-  }
-  const handleCardClick = (todo: Todo) => {
-    setSelectedTodo(todo)
-    setModalOpen(true)
-  }
   const onDoneClick = async (id: number) => {
     await todoService.remove(`/temporary_todos/${id}`)
     const todosToUpdate = todos.filter(todo => todo.id !== id)
     setTodos(todosToUpdate)
-    handleModalClose()
   } 
-  const handleModalSubmit = async (values: FormValues) => {
+  const handleSubmit = async ({values, todoId}: {values: FormValues, todoId: number | null}) => {
     const newValues = {
       name: values.name,
       deadline: sub(parseJSON(`${values.deadline}:00`), { hours: 9 })
     }
-    if (selectedTodo) {
-      const data = await todoService.edit(`/temporary_todos/${selectedTodo.id}`, newValues)
-      setTodos(todos.map(todo => todo.id === selectedTodo.id ? parseTodo(data as TodoBackend) : todo))
+    if (todoId) {
+      const data = await todoService.edit(`/temporary_todos/${todoId}`, newValues)
+      setTodos(todos.map(todo => todo.id === todoId ? parseTodo(data as TodoBackend) : todo))
     } else {
       const data = await todoService.create('/temporary_todos', newValues)
       setTodos([...todos, parseTodo(data as TodoBackend)])
     }
-    handleModalClose()
   }
   return (
-    <div className={classes.container}>
-      <Typography variant='h5'>一回タスク</Typography>
-      <div className={classes.todos}>
-        {sortedTodos.map(todo => (
-          <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
-        ))}
-      </div>
-      <IconButton onClick={()=>{setModalOpen(true)}}>
-        <AddCircleOutline fontSize='large'/>
-      </IconButton> 
-      <CreateTodo open={modalOpen} handleClose={handleModalClose} selectedTodo={selectedTodo} todoType='temporary' handleSubmit={handleModalSubmit} handleDelete={onDoneClick}/>
-    </div>
+    <TodoList 
+      title='一回タスク' 
+      todoType='temporary' 
+      todos={sortedTodos} 
+      onDoneClick={onDoneClick}
+      handleDelete={onDoneClick}
+      handleSubmit={handleSubmit}  
+    />
   )
 }
 
