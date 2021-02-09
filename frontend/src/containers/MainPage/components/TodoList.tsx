@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormValues, PeriodicTodo as PeriodicTodoType, TemporaryTodo as TemporaryTodoType} from '../../../types';
-import PeriodicTodo from '../PeriodicTodos/PeriodicTodo'
-import TemporaryTodo from '../TemporaryTodos/TemporaryTodo'
+import PeriodicTodo from './PeriodicTodo'
+import TemporaryTodo from './TemporaryTodo'
 import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons'
 import TodoFormModal from '../components/TodoFormModal';
