@@ -69,7 +69,7 @@ const initialValues = {
   desiredIntervalDays: 1,
   deadline: format(new Date(), "yyyy-MM-dd'T'HH:mm")
 }
-const CreateTodo: React.FC<Props> = ({ todoType, open, handleClose, selectedTodo, handleSubmit, handleDelete }) => {
+const TodoFormModal: React.FC<Props> = ({ todoType, open, handleClose, selectedTodo, handleSubmit, handleDelete }) => {
   const classes = useStyles()
   const formik = useFormik({
     initialValues,
@@ -165,4 +165,4 @@ const CreateTodo: React.FC<Props> = ({ todoType, open, handleClose, selectedTodo
   );
 };
 
-export default CreateTodo;
+export default TodoFormModal;

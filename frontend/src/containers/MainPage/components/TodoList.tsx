@@ -4,7 +4,7 @@ import PeriodicTodo from '../PeriodicTodos/PeriodicTodo'
 import TemporaryTodo from '../TemporaryTodos/TemporaryTodo'
 import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons'
-import CreateTodo from '../components/TodoFormModal';
+import TodoFormModal from '../components/TodoFormModal';
 
 const useStyles = makeStyles({
   container: {
@@ -17,10 +17,11 @@ const useStyles = makeStyles({
     maxHeight: '70vh'
   }
 })
+type Todo = PeriodicTodoType | TemporaryTodoType
 interface Props {
   title: string,
   todoType: 'periodic' | 'temporary',
-  todos: PeriodicTodoType[] | TemporaryTodoType[],
+  todos: Todo[],
   onDoneClick: (id: number) => void,
   handleSubmit: ({values, todoId} : {values: FormValues, todoId: number | null}) => void,
   handleDelete: (id: number) => void
@@ -28,13 +29,13 @@ interface Props {
 const TodoList: React.FC<Props> = ({title, todoType, todos, onDoneClick, handleSubmit, handleDelete}) => {
   const classes = useStyles()
   const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [selectedTodo, setSelectedTodo] = useState<PeriodicTodoType | TemporaryTodoType | null>(null)
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
   
   const handleModalClose = () => {
     setModalOpen(false)
     setSelectedTodo(null)
   }
-  const handleCardClick = (todo: PeriodicTodoType | TemporaryTodoType) => {
+  const handleCardClick = (todo: Todo) => {
     setSelectedTodo(todo)
     setModalOpen(true)
   }
@@ -55,20 +56,17 @@ const TodoList: React.FC<Props> = ({title, todoType, todos, onDoneClick, handleS
     <div className={classes.container}>
       <Typography variant='h5'>{title}</Typography>
       <div className={classes.todos}>
-        {todoType === 'periodic' ? 
-        // TODO: consider to write without using as
-          (todos as PeriodicTodoType[]).map(todo => (
-            <PeriodicTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
-          )) :
-          (todos as TemporaryTodoType[]).map(todo =>  
+        {todos.map(todo => (
+          ('deadline' in todo) ? 
             <TemporaryTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
-          )
-        }
+            :
+            <PeriodicTodo key={todo.id} todo={todo} onDoneClick={onDoneClick} onCardClick={handleCardClick}/>
+        ))}
       </div>
       <IconButton onClick={()=>{setModalOpen(true)}}>
         <AddCircleOutline fontSize='large'/>
       </IconButton>
-      <CreateTodo open={modalOpen} handleClose={handleModalClose} selectedTodo={selectedTodo} todoType={todoType}  handleSubmit={handleModalSubmit} handleDelete={handleModalDelete}/>
+      <TodoFormModal open={modalOpen} handleClose={handleModalClose} selectedTodo={selectedTodo} todoType={todoType}  handleSubmit={handleModalSubmit} handleDelete={handleModalDelete}/>
     </div>
   )
 }
