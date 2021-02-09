@@ -1,7 +1,7 @@
 import React  from 'react';
 import { PeriodicTodo as Todo } from '../../../types';
 import { makeStyles, Typography } from '@material-ui/core';
-import TodoCard from '../components/TodoCard'
+import TodoCard from './TodoCard'
 import { Loop, CheckCircleOutline } from '@material-ui/icons'
 
 const useStyles = makeStyles({

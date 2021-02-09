@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { differenceInMinutes, parseJSON, formatDistanceToNowStrict, sub } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import todoService from '../../../services/todo'
-import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend, FormValues } from '../../../types'
-import TodoList from '../components/TodoList';
+import todoService from '../../services/todo'
+import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend, FormValues } from '../../types'
+import TodoList from './components/TodoList';
 
 
 const TemporaryTodos: React.FC = () => {

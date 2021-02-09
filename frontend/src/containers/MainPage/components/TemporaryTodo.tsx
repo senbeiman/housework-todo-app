@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TemporaryTodo as Todo } from '../../../types'
 import { makeStyles, Typography } from '@material-ui/core';
-import TodoCard from '../components/TodoCard'
+import TodoCard from './TodoCard'
 import { Alarm } from '@material-ui/icons'
 
 const useStyles = makeStyles({
