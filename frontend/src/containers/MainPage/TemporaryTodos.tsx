@@ -5,7 +5,6 @@ import todoService from '../../services/todo'
 import { TemporaryTodo as Todo, TemporaryTodoBackend as TodoBackend, FormValues } from '../../types'
 import TodoList from './components/TodoList';
 
-
 const TemporaryTodos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
@@ -17,7 +16,6 @@ const TemporaryTodos: React.FC = () => {
       minutesLeftToDeadline
     }
   }
-  
 
   const parseTodo = (todo: TodoBackend) => {
     const deadline = parseJSON(todo.deadline)
