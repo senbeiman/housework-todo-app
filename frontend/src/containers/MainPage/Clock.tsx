@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import { format, getDay } from 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core'
 import { ja } from 'date-fns/locale'
@@ -11,15 +11,24 @@ const useStyles = makeStyles({
     marginTop: 10
   },
 })
-const Clock: React.FC = () => {
+interface Props {
+  onDayChange: () => void
+}
+const Clock: React.FC<Props> = ({ onDayChange }) => {
   const classes = useStyles()
-  const [datetime, setDatetime] = useState(new Date())
-  const date = format(datetime, 'yyyy/M/d(E)', { locale: ja })
-  const time = format(datetime, 'HH:mm:ss', { locale: ja })
+  const [datetime, setDatetime] = useState([new Date(), new Date()])
+  const date = format(datetime[1], 'yyyy/M/d(E)', { locale: ja })
+  const time = format(datetime[1], 'HH:mm:ss', { locale: ja })
  
   useEffect(() => {
+    if (getDay(datetime[0]) !== getDay(datetime[1])) {
+      onDayChange()
+    }
+  }, [datetime])
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
-      setDatetime(new Date())
+      setDatetime([datetime[1], new Date()])
     }, 1000)
     return () => {clearInterval(intervalId)}
   }, [])
