@@ -54,7 +54,7 @@ const PeriodicTodo: React.FC<Props> = ({ todo, onDoneClick, onCardClick }) => {
           }
         </Typography>
       </div>
-      <Typography variant='body1' color={todo.daysLeftToDesired && (todo.daysLeftToDesired <= 0) ? 'secondary' : 'inherit'}>
+      <Typography variant='body1' color={(todo.daysLeftToDesired !== null) && (todo.daysLeftToDesired <= 0) ? 'secondary' : 'inherit'}>
         {generateAdvice(todo.daysLeftToDesired)}
       </Typography>
     </TodoCard>
