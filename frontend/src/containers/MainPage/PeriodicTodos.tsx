@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import todoService from '../../services/todo'
-import { startOfDay, differenceInDays, startOfToday, parseJSON } from 'date-fns';
+import { startOfDay, differenceInDays, parseJSON } from 'date-fns';
 import { PeriodicTodo as Todo, PeriodicTodoBackend as TodoBackend, FormValues } from '../../types';
 import TodoList from './components/TodoList';
 
-const PeriodicTodos: React.FC = () => {
+const PeriodicTodos: React.FC<{today: Date}> = ({ today }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   
 
   const calculateParametersToUpdate = ({ lastUpdatedAt , desiredIntervalDays }: {lastUpdatedAt: Date | null, desiredIntervalDays: number}) => {
     const calculateDistanceFromToday = (lastUpdatedAt: Date) => (
-      differenceInDays(startOfToday(), startOfDay(lastUpdatedAt))
+      differenceInDays(today, startOfDay(lastUpdatedAt))
     )
     const lastUpdatedDistance = lastUpdatedAt && calculateDistanceFromToday(lastUpdatedAt)
     const daysLeftToDesired = (lastUpdatedDistance !== null) ? (desiredIntervalDays - lastUpdatedDistance) : null
@@ -80,12 +80,8 @@ const PeriodicTodos: React.FC = () => {
         daysLeftToDesired
       }
     })
-    // TODO: refactor not to use polling but to trigger from clock component's push that notifies a day changing
-    const intervalId = setInterval(() => {
-      setTodos(todosToUpdate)
-    }, 1000 * 60)
-    return () => {clearInterval(intervalId)}
-  }, [todos])
+    setTodos(todosToUpdate)
+  }, [today])
 
   const sortedTodos = [...todos].sort((a, b) => {
     if (!a.daysLeftToDesired) {

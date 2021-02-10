@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import Clock from './Clock';
 import PeriodicTodos from './PeriodicTodos';
 import TemporaryTodos from './TemporaryTodos';
 import Trash from './Trash';
 import Weather from './Weather';
+import { startOfToday } from 'date-fns';
 
 const useStyles = makeStyles({
   container: {
@@ -28,16 +29,17 @@ const useStyles = makeStyles({
 
 })
 const MainPage: React.FC = () => {
+  const [today, setToday] = useState(startOfToday())
   const classes = useStyles()
   return (
     <div className={classes.container}>
       <div className={classes.headContainer}>
-        <Clock />
+        <Clock onDayChange={() => setToday(startOfToday())}/>
         <Weather />
       </div>
-      <Trash />
+      <Trash today={today} />
       <div className={classes.todosContainer}>
-        <PeriodicTodos />
+        <PeriodicTodos today={today}/>
         <TemporaryTodos />
       </div>
     </div>

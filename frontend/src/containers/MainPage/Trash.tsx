@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { differenceInDays } from 'date-fns';
 import { makeStyles, Typography } from '@material-ui/core';
 import { Info } from '@material-ui/icons'
@@ -10,9 +10,8 @@ const useStyles = makeStyles({
     alignItems: 'center'
   },
 })
-const Trash: React.FC = () => {
+const Trash: React.FC<{today: Date}> = ({ today }) => {
   const classes = useStyles()
-  const [trash, setTrash] = useState<string | null>(null);
   const referenceTime = new Date(2020, 2, 1) // 2020/3/1(Sun)
   const getTrash = (dayDiff: number) => {
     if (dayDiff % 14 === 0) {
@@ -37,16 +36,8 @@ const Trash: React.FC = () => {
       return null
     }
   }
-  useEffect(() => {
-    const updateTrash = () => {
-      const currentTime = new Date()
-      const dayDiff = differenceInDays(currentTime, referenceTime)
-      setTrash(getTrash(dayDiff))
-    }
-    updateTrash()
-    const intervalId = setInterval(updateTrash, 1000 * 60)
-    return () => {clearInterval(intervalId)}
-  }, [])
+  const dayDiff = differenceInDays(today, referenceTime)
+  const trash = getTrash(dayDiff)
   return (
     <div className={classes.container}>
       <Info fontSize='large' color='primary'/>
