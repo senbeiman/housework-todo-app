@@ -84,10 +84,10 @@ const PeriodicTodos: React.FC<{today: Date}> = ({ today }) => {
   }, [today])
 
   const sortedTodos = [...todos].sort((a, b) => {
-    if (!a.daysLeftToDesired) {
+    if (a.daysLeftToDesired === null) {
       return -1
     }
-    if (!b.daysLeftToDesired) {
+    if (b.daysLeftToDesired === null) {
       return 1
     }
     return a.daysLeftToDesired - b.daysLeftToDesired
