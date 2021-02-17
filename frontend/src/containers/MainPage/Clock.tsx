@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 })
 interface Props {
-  onDayChange: () => void
+  onDayChange: (datetime: Date) => void
 }
 const Clock: React.FC<Props> = ({ onDayChange }) => {
   const classes = useStyles()
@@ -22,7 +22,7 @@ const Clock: React.FC<Props> = ({ onDayChange }) => {
  
   useEffect(() => {
     if (getDay(datetime[0]) !== getDay(datetime[1])) {
-      onDayChange()
+      onDayChange(datetime[1])
     }
   }, [datetime])
 
