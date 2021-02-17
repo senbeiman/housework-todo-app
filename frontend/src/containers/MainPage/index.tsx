@@ -5,7 +5,7 @@ import PeriodicTodos from './PeriodicTodos';
 import TemporaryTodos from './TemporaryTodos';
 import Trash from './Trash';
 import Weather from './Weather';
-import { startOfToday } from 'date-fns';
+import { startOfDay, startOfToday } from 'date-fns';
 
 const useStyles = makeStyles({
   container: {
@@ -34,7 +34,7 @@ const MainPage: React.FC = () => {
   return (
     <div className={classes.container}>
       <div className={classes.headContainer}>
-        <Clock onDayChange={() => setToday(startOfToday())}/>
+        <Clock onDayChange={(datetime) => setToday(startOfDay(datetime))}/>
         <Weather />
       </div>
       <Trash today={today} />
