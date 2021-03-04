@@ -16,21 +16,23 @@ interface Props {
 }
 const Clock: React.FC<Props> = ({ onDayChange }) => {
   const classes = useStyles()
-  const [datetime, setDatetime] = useState([new Date(), new Date()])
-  const date = format(datetime[1], 'yyyy/M/d(E)', { locale: ja })
-  const time = format(datetime[1], 'HH:mm:ss', { locale: ja })
+  const [datetime, setDatetime] = useState(new Date())
+  const [delayedDatetime, setDelayedDatetime] = useState(new Date())
+  const date = format(datetime, 'yyyy/M/d(E)', { locale: ja })
+  const time = format(datetime, 'HH:mm:ss', { locale: ja })
  
   const [debugTime, setDebugTime] = useState(new Date())
   useEffect(() => {
-    if (getDay(datetime[0]) !== getDay(datetime[1])) {
-      onDayChange(datetime[1])
-      setDebugTime(datetime[1])
+    if (getDay(datetime) !== getDay(delayedDatetime)) {
+      onDayChange(datetime)
+      setDebugTime(datetime)
     }
+    setDelayedDatetime(datetime)
   }, [datetime])
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setDatetime([datetime[1], new Date()])
+      setDatetime(new Date())
     }, 1000)
     return () => {clearInterval(intervalId)}
   }, [])
