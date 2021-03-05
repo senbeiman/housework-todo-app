@@ -21,11 +21,9 @@ const Clock: React.FC<Props> = ({ onDayChange }) => {
   const date = format(datetime, 'yyyy/M/d(E)', { locale: ja })
   const time = format(datetime, 'HH:mm:ss', { locale: ja })
  
-  const [debugTime, setDebugTime] = useState(new Date())
   useEffect(() => {
     if (getDay(datetime) !== getDay(delayedDatetime)) {
       onDayChange(datetime)
-      setDebugTime(datetime)
     }
     setDelayedDatetime(datetime)
   }, [datetime])
@@ -40,7 +38,6 @@ const Clock: React.FC<Props> = ({ onDayChange }) => {
     <div className={classes.container}>
       <Typography variant='h5'>{date}</Typography>
       <Typography variant='h3'>{time}</Typography>
-      <Typography variant='caption'>onDayChange(debug): {format(debugTime, 'M/d(E) HH:mm:ss')}</Typography>
     </div>
   )
 }
