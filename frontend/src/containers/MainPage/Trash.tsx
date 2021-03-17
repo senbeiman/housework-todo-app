@@ -17,7 +17,7 @@ const Trash: React.FC<{today: Date}> = ({ today }) => {
     if (dayDiff % 14 === 0) {
       return 'ビン・カン'
     } else if (dayDiff % 14 === 3) {
-      return 'プラ・衣類・布類'
+      return 'プラ・衣類・布類・枝葉'
     } else if (dayDiff % 14 === 7) {
       return 'ダンボール'
     } else if (dayDiff % 14 === 9) {
