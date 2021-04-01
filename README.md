@@ -1,6 +1,6 @@
 # housework todo app
 this is housework todo manager designed to run on raspberry pi with touch display  
-ScreenShot![image](https://user-images.githubusercontent.com/38104335/113247482-18c36200-92f6-11eb-9c4c-85c7e66ff66d.png)
+<img src="https://user-images.githubusercontent.com/38104335/113247482-18c36200-92f6-11eb-9c4c-85c7e66ff66d.png" width="320px">
 
 # how to setup Raspberry Pi
 in boot directory in raspberry pi, create ssh file, copy /edge/wpa_supplicant.conf and /edge/setup.sh  
